@@ -14,8 +14,8 @@ echo "Updating and upgrading the system..."
 apt update -y && apt upgrade -y
 
 # Install required packages
-echo "Installing additional packages..."
-apt install -y cmake git mplayer mpv python3-full python3-pip python3-rich python3-requests python3-dnspython python3-psutil python3-netifaces python3-dateutil
+# echo "Installing additional packages..."
+# apt install -y cmake git mplayer mpv python3-full python3-pip python3-rich python3-requests python3-dnspython python3-psutil python3-netifaces python3-dateutil
 
 # Clone and build fbcp-ili9341
 echo "Cloning fbcp-ili9341 repository..."
