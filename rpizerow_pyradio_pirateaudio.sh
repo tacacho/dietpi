@@ -4,8 +4,8 @@
 # These are general instructions; adjust as needed based on your specific setup and requirements.
 
 # Define variables if needed for URL or other configurations
-PYRADIO_INSTALL_URL="https://raw.githubusercontent.com/coderholic/pyradio/master/pyradio/install.py"
-STATIONS_URL="https://raw.githubusercontent.com/tacacho/radio/main/stations.csv"
+# PYRADIO_INSTALL_URL="https://raw.githubusercontent.com/coderholic/pyradio/master/pyradio/install.py"
+# STATIONS_URL="https://raw.githubusercontent.com/tacacho/radio/main/stations.csv"
 
 # END EDIT SECTION
 
@@ -49,13 +49,13 @@ EOF
 
 # Install PyRadio
 echo "Installing PyRadio..."
-wget ${PYRADIO_INSTALL_URL} -O /tmp/install.py
+wget https://raw.githubusercontent.com/coderholic/pyradio/master/pyradio/install.py -O /tmp/install.py
 python3 /tmp/install.py
 
 # Configure PyRadio
 echo "Configuring PyRadio..."
 mkdir -p ~/.config/pyradio
-curl ${STATIONS_URL} -o ~/.config/pyradio/stations.csv -f
+curl https://raw.githubusercontent.com/tacacho/radio/main/stations.csv -o ~/.config/pyradio/stations.csv -f
 
 # Adjust font size
 echo "Adjusting font size..."
