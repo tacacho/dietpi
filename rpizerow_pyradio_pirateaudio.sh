@@ -3,9 +3,6 @@
 # BEGIN EDIT SECTION
 # These are general instructions; adjust as needed based on your specific setup and requirements.
 
-# NOTE: Ensure you have the right DietPi version (32-bit) for your Raspberry Pi model
-# For RPi 3, DietPi should be installed correctly. Make sure you are using the correct build.
-
 # Define variables if needed for URL or other configurations
 PYRADIO_INSTALL_URL="https://raw.githubusercontent.com/coderholic/pyradio/master/pyradio/install.py"
 STATIONS_URL="https://raw.githubusercontent.com/tacacho/radio/main/stations.csv"
@@ -18,7 +15,7 @@ apt update -y && apt upgrade -y
 
 # Install required packages
 echo "Installing additional packages..."
-apt install -y cmake git mplayer mpv python3-full python3-pip python3-rich python3-requests python3-dnspython python3-psutil python3-netifaces python3-dateutil fonts-terminus
+apt install -y cmake git mplayer mpv python3-full python3-pip python3-rich python3-requests python3-dnspython python3-psutil python3-netifaces python3-dateutil
 
 # Clone and build fbcp-ili9341
 echo "Cloning fbcp-ili9341 repository..."
@@ -62,17 +59,23 @@ curl ${STATIONS_URL} -o ~/.config/pyradio/stations.csv -f
 
 # Adjust font size
 echo "Adjusting font size..."
+apt install -y fonts-terminus
 sed -i 's/FONTFACE=".*"/FONTFACE="Terminus"/' /etc/default/console-setup
 sed -i 's/FONTSIZE=".*"/FONTSIZE="14x28"/' /etc/default/console-setup
-sudo setupcon
 
 # Make display work on reboot
 echo "Configuring display to start on boot..."
 sed -i '$i sudo /home/pi/fbcp-ili9341/build/fbcp-ili9341 &' /etc/rc.local
 
-# Optional: Edit PyRadio server.py if needed
-# You might want to provide instructions to edit this file manually if required
-echo "You may need to edit /home/pi/.local/lib/python3.*/site-packages/pyradio/server.py to change the server."
-echo "Also, ensure that PyRadio configuration is set to enable LAN control."
+# Configure PyRadio to start on boot
+echo "Configuring PyRadio to start on boot..."
+cat << EOF >> /etc/rc.local
+# Start PyRadio
+/usr/bin/python3 /home/pi/.local/lib/python3.*/site-packages/pyradio/pyradio.py &
+EOF
 
-echo "Setup complete. Please reboot your system for changes to take effect."
+# Inform the user that setup is complete and the system will reboot
+echo "Setup complete. The system will reboot now to apply changes."
+
+# Reboot the system
+reboot
