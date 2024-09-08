@@ -15,7 +15,7 @@ sudo apt update -y && sudo apt upgrade -y
 
 # Install required packages
 echo "Installing additional packages..."
-sudo apt install -y cmake git mplayer mpv python3-full python3-pip python3-rich python3-requests python3-dnspython python3-psutil python3-netifaces python3-dateutil
+sudo apt install -y cmake git mplayer mpv python3-full python3-pip python3-rich python3-requests python3-dnspython python3-psutil python3-netifaces python3-dateutil fonts-terminus
 
 # Clone and build fbcp-ili9341
 echo "Cloning fbcp-ili9341 repository..."
@@ -70,12 +70,15 @@ curl $STATIONS_URL -o ~/.config/pyradio/stations.csv -f
 
 # Adjust font size
 echo "Adjusting font size..."
-sudo apt install -y fonts-terminus
 sudo sed -i 's/FONTFACE=".*"/FONTFACE="Terminus"/' /etc/default/console-setup
 sudo sed -i 's/FONTSIZE=".*"/FONTSIZE="14x28"/' /etc/default/console-setup
 
 # Make display work on reboot
 echo "Configuring display to start on boot..."
+if [ ! -f /etc/rc.local ]; then
+    echo -e "#!/bin/bash\nexit 0" | sudo tee /etc/rc.local
+    sudo chmod +x /etc/rc.local
+fi
 sudo sed -i '$i sudo /home/pi/fbcp-ili9341/build/fbcp-ili9341 &' /etc/rc.local
 
 # Configure PyRadio to start on boot
